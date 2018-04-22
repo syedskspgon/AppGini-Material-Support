@@ -1,0 +1,186 @@
+function htmlUserBar(){
+		global $adminConfig, $Translation;
+		global $app_title;
+		if(!defined('PREPEND_PATH')) define('PREPEND_PATH', '');
+
+		ob_start();
+		$home_page = (basename($_SERVER['PHP_SELF'])=='index.php' ? true : false);
+
+		?>		
+		<?php 
+			$memID = getLoggedMemberID();
+			if(!$_REQUEST['Embedded'] && $memID !=  $adminConfig['anonymousMember']){
+			?>
+		<div class="sidebar" data-color="purple" data-color="orange" data-image="<?php echo PREPEND_PATH; ?>assets/img/sidebar-1.jpg">
+            <div class="logo">
+                <a href="./index.php" class="simple-text">
+                    <i class="material-icons">home</i> <?php echo $app_title;?>
+                </a>
+            </div>
+            <div class="sidebar-wrapper" style="overflow:auto">
+                <ul class="nav">
+                    <li id="tbl_syed_dashboard">
+                        <a href="index.php">
+                            <i class="material-icons">dashboard</i>
+                            <p>Dashboard</p>
+                        </a>
+                    </li>
+                    
+			<?php
+					$arrTables = getTableList();
+					if(is_array($arrTables) && count($arrTables)){
+						$i=0;
+						foreach($arrTables as $tn=>$tc){
+							$tChkFF = array_search($tn, array());
+							$tChkHL = array_search($tn, array());
+							if($tChkHL !== false && $tChkHL !== null) continue;
+
+							$searchFirst = (($tChkFF !== false && $tChkFF !== null) ? '?Filter_x=1' : '');
+							?>
+							
+								<li id="tbl_<?php echo $tn; ?>">
+									<a  href="<?php echo $tn; ?>_view.php<?php echo $searchFirst; ?>">
+									 <i class="menu-icon" style="margin-top:0px;"><?php echo ($tc[2] ? '<img style="height:24px;" src="' . $tc[2] . '">' : '');?></i>
+										<p><?php echo $tc[0]; ?></p>
+									</a>
+								</li>
+										
+									
+							<?php
+							$i++;
+						}
+					}
+					?>
+                </ul>
+            </div>
+        </div>
+		<div class="main-panel" style="overflow-y:scroll">
+			<nav class="navbar navbar-transparent navbar-absolute">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+						
+						<h4 class="hidden-lg hidden-md text-center">
+                    <i class="material-icons">home</i> Sales
+                </h4>
+                    </div>
+                    <div class="collapse navbar-collapse">
+                        <ul class="nav navbar-nav navbar-right">
+							<li>
+								<a class="hidden-xs hidden-sm" style="text-transform:none;font-size:20px"><?php echo $Translation['signed as']; ?> <strong><?php echo getLoggedMemberID(); ?></strong></a>
+							</li>
+
+							 
+							<?php if(getLoggedAdmin()){ ?>
+							<li >
+                                <a href="#" class="btn btn-success" data-toggle="dropdown">
+                                    <i class="material-icons">graphic_eq</i>
+                                    Add Widget
+                                </a>
+                                 <ul class="dropdown-menu">
+                                    <li>
+                                        <a data-toggle="modal" href="#modal_card">Card</a>
+                                    </li>
+                                    <li>
+                                        <a data-toggle="modal" href="#modal_chart">Chart</a>
+                                    </li>
+                                   
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="admin/pageHome.php" class="btn btn-danger btn-just-icon" data-toggle="tooltip" data-placement="bottom" title="Admin Area">
+                                    <i class="material-icons">settings</i>
+                                    <p class="hidden-lg hidden-md">Admin Area</p>
+                                </a>
+                            </li>
+
+                            
+                            <?php } ?>
+                            <li>
+                                <a href="index.php?signOut=1" class="btn btn-default btn-just-icon" data-toggle="tooltip" data-placement="bottom" title="Signout">
+                                    <i class="material-icons">power_settings_new</i>
+                                    <p class="hidden-lg hidden-md text-white">Signout</p>
+                                </a>
+                            </li>
+                        </ul>
+                        <form class="navbar-form navbar-right" role="search">
+                            
+                        
+                        </form>
+                    </div>
+               
+						
+					
+			</div>
+		</nav>
+				<div style="height: 70px;" class="hidden-print"></div>
+			<?php }
+
+			else{
+				
+			?>
+				
+			<nav class="navbar navbar-default">
+						<div class="container">
+							<div class="navbar-header">
+								<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#example-navbar-info">
+									<span class="sr-only">Toggle navigation</span>
+									<span class="icon-bar"></span>
+									<span class="icon-bar"></span>
+									<span class="icon-bar"></span>
+								</button>
+								<a class="navbar-brand" href="index.php"><i class="material-icons">home</i> Sales</a>
+							</div>
+
+							<div class="collapse navbar-collapse" id="example-navbar-info">
+								<?php if(!$_GET['signIn'] && !$_GET['loginFailed']){ ?>
+					<?php if(getLoggedMemberID() == $adminConfig['anonymousMember']){ ?>
+						<p class="navbar-text navbar-right" style="margin:0px">&nbsp;</p>
+						<a href="<?php echo PREPEND_PATH; ?>index.php?signIn=1" class="btn btn-success navbar-btn navbar-right"><?php echo $Translation['sign in']; ?></a>
+						<p class="navbar-text navbar-right" style="margin:0px">
+							<?php echo $Translation['not signed in']; ?>
+						</p>
+					<?php }else{ ?>
+						<ul class="nav navbar-nav navbar-right hidden-xs" style="min-width: 330px;">
+							<a class="btn navbar-btn btn-default" href="<?php echo PREPEND_PATH; ?>index.php?signOut=1"><i class="glyphicon glyphicon-log-out"></i> <?php echo $Translation['sign out']; ?></a>
+							<p class="navbar-text" style="margin:0px">
+								<?php echo $Translation['signed as']; ?> <strong><a href="<?php echo PREPEND_PATH; ?>membership_profile.php" class="navbar-link"><?php echo getLoggedMemberID(); ?></a></strong>
+							</p>
+						</ul>
+						<ul class="nav navbar-nav visible-xs">
+							<a class="btn navbar-btn btn-default btn-lg visible-xs" href="<?php echo PREPEND_PATH; ?>index.php?signOut=1"><i class="glyphicon glyphicon-log-out"></i> <?php echo $Translation['sign out']; ?></a>
+							<p class="navbar-text text-center" style="margin:0px">
+								<?php echo $Translation['signed as']; ?> <strong><a href="<?php echo PREPEND_PATH; ?>membership_profile.php" class="navbar-link"><?php echo getLoggedMemberID(); ?></a></strong>
+							</p>
+						</ul>
+						<script>
+							/* periodically check if user is still signed in */
+							setInterval(function(){
+								$j.ajax({
+									url: '<?php echo PREPEND_PATH; ?>ajax_check_login.php',
+									success: function(username){
+										if(!username.length) window.location = '<?php echo PREPEND_PATH; ?>index.php?signIn=1';
+									}
+								});
+							}, 60000);
+						</script>
+					<?php } ?>
+				<?php } ?>
+							</div>
+						</div>
+					</nav>
+			<?php
+				
+			}?>
+		<?php
+
+		$html = ob_get_contents();
+		ob_end_clean();
+
+		return $html;
+	}

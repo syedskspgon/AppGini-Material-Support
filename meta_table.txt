@@ -1,0 +1,19 @@
+CREATE TABLE `meta_table` (
+  `id` int(11) NOT NULL,
+  `type` varchar(120) NOT NULL,
+  `title` varchar(225) NOT NULL,
+  `table_name` varchar(225) NOT NULL,
+  `field1` varchar(225) NOT NULL,
+  `field2` varchar(225) NOT NULL,
+  `icon` varchar(225) NOT NULL,
+  `color` varchar(225) NOT NULL,
+  `extra` varchar(225) NOT NULL,
+  `result` text NOT NULL,
+  `chart_type` varchar(120) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `meta_table`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `meta_table`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
