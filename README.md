@@ -4,6 +4,12 @@ Hi Users,
 
  Check the documentation.pdf for plugin documentation.
  
+ AppGini Material Support
+ 
+   Full version  : http://syed.spgon.in/sales/index.php?signIn=1
+   
+   Minor version : http://syed.spgon.in/sales2/index.php?signIn=1
+ 
  If you have free time, check my other application which has a few components like
  
   1. Dynamically creating tables & its Fields
@@ -14,5 +20,6 @@ Hi Users,
   6. it's a Saas Application, so You can create your own database application online.(click on register here on below link)
   
    Link : http://syed.spgon.in/demo/login/index.php
+   credentials : username - spgon , password - spgon
   
    Thank you
